@@ -1,4 +1,4 @@
-namespace cs2120f24.propLogic
+namespace cs2120f24
 
 -- # Semantic Domain: Boolean Algebra
 
@@ -21,4 +21,4 @@ def iff : Bool → Bool → Bool
 | false, false => true
 | _, _ => false
 
-end cs2120f24.propLogic
+end cs2120f24

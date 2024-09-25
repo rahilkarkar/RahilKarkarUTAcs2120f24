@@ -1,7 +1,7 @@
-namespace cs2120f24.arith
+namespace cs2120f24.natArithmetic
 
 /-!
-# Expression Language of Arithmetic
+# Syntax: Expression Language of Arithmetic
 
 Ok, so now that we have the semantic domain, what
 about our expression language? We'll you write it
@@ -18,38 +18,38 @@ values that the particular interpretation assigns
 to them.
 -/
 
+structure Var : Type :=
+  mk :: (index: Nat)
 
-/-!
-## Syntax
--/
 
--- arithmetic variables
-structure natVar where
-  (index : Nat)
-
--- unary arithmetic operators (here increment, decrement)
-inductive arith_UnOp where
-| fac
-
--- binary arithemtic operators (here +, -, and *)
-inductive arith_BinOp where
+-- pull from semantic domain: give syntax to concepts
+inductive BinOp : Type where
 | add
 | sub
 | mul
 
+-- pull from semantic domain: give syntax to concepts
+inductive UnOp : Type where
+| inc
+| dec
+| doub
+| halv
+| fac
+
 -- abstract syntax
-inductive arithExpr
-| lit (n : Nat)
-| var (v : natVar)
-| UnOp (op : arith_UnOp) (e : arithExpr)
-| BinOp (op : arith_BinOp) (e1 e2 : arithExpr)
+
+inductive Expr : Type where
+| lit (from_nat : Nat) : Expr
+| var (from_var : Var)
+| unOp (op : UnOp) (e : Expr)
+| binOp (op : BinOp) (e1 e2 : Expr)
 
 -- concrete syntax
-notation " { " v " } " => arithExpr.var v
-notation:max "++" n => arithExpr.UnOp arith_UnOp.inc n
-notation:max "--" n => arithExpr.UnOp arith_UnOp.dec n
-notation e1 "+" e2 => arithExpr.BinOp arith_BinOp.add e1 e2
-notation e1 "-" e2 => arithExpr.BinOp arith_BinOp.sub e1 e2
-notation e1 "*" e2 => arithExpr.BinOp arith_BinOp.mul e1 e2
+notation " { " v " } " => Expr.var v
+notation " [ " n " ] " => Expr.lit n
+notation e " ! " => Expr.unOp UnOp.fac e
+notation e1 " + " e2 => Expr.binOp BinOp.add e1 e2
+notation e1 " - " e2 => Expr.binOp BinOp.sub e1 e2
+notation e1 " * " e2 => Expr.binOp BinOp.mul e1 e2
 
-end cs2120f24.arith
+end cs2120f24.natArithmetic
